@@ -1,0 +1,26 @@
+\chapter{Motivation}
+\begin{itemize}
+	\item GPUs are not CPUs. Different design philosophy leads to different application optimizations
+	\item GPU's concurrent hardware continues to scale
+	\item therefore optimizations of data movements, consistency etc. are required to harness compute power of new hardware generations
+	\item Complex Applications have non-trivial communication patterns in data parallel kernels, which are not researched yet.
+	\item This work is aimed to generate understanding of communication patterns to help build and optimize Tools (Mekong etc.) and Applications
+	\item Generate Traces with compiler instrumentation because
+	\item ...Process simulators to slow for real applications and too outdated (GPUSim only supports up to Fermi)
+	\item ...analytical modelling usually lack the accuracy to capture exact patterns in complex communication since they are based on simplifications
+	
+\end{itemize}
+\section{Goal}
+The Goal of this Thesis is to develop instrumentation for dynamic global memory tracing in GPU applications. The instrumentation will happen at compile time using custom plugins for CLang and LLVM to transform the source code of the
+original application. With this setup, traces can be generated with any application that provides source code and
+across different generations of NVivida hardware. A loss in performance resulting from the traces will be tolerated.
+
+The generated traces will be used to analyse how CTAs communicate during the execution of an application. 
+The communication will be analysed on a qualitative level by classifying how the data is exchanged (Peer-to-Peer, One to Many etc.) and on a quantitative level with metrics like volume, frequency and density are used to describe the CTA interactions.
+
+\section{Outline}
+	\paragraph{Chapter 2} presents technological background information. It will focus on LLVM, SSA and the compiler techniques used to transform the code of the original application.
+	\paragraph{Chapter 3} discusses work related to this Thesis. It will explore work in the field of code instrumentation, communication patterns and GPU performance analysis.
+	\paragraph{Chapter 4} presents how the tracing is realized including the compile stack, AST manipulation and deeper code analysis in LLVM's intermidiate representation (IR).
+	\paragraph{Chapter 5} presents the set of applications that will be analysed, the different metrics are explained in detail and the results of the analysis are discussed in length.
+	\paragraph{Chapter 6} concludes and summarizes the results of this Thesis and discusses possible future directions this project could take.

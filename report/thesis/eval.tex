@@ -1,0 +1,32 @@
+\chapter{Evaluation and Analysis of GPU Communication}
+Some introducing words and a paragraph on the issue with Applications using Streams. 
+
+Define what communication means in our context. (Write->Read between different CTAs etc...)
+\section{Evaluated Applications}
+	Set of Functions that can display a communicating behavior, tend to be iterative kernels
+\begin{itemize}
+	\item Histogram
+	\item Stencil (CG Code)
+	\item Stencil (Rodinia 3D)
+	\item NBody
+	\item Graphs, for more irregular access patterns
+	\item Reduction (Included in CG)
+\end{itemize}
+\section{Analysis Parameters}
+\subsection{Communication Classes}
+\begin{itemize}
+	\item P2P: One Writer, one Reader
+	\item Scatter: One Writer, Multiple Readers
+	\item Gather: Multiple Writes, one Reader
+	\item Synchronization: Atomic access to one Address by multiple CTAs
+\end{itemize}
+\subsection{Communication Metrics}
+\begin{itemize}
+	\item Transfer Size Histogram: Data Transferred in one Communication between two CTAs
+	\item Transfer Density: Number of Communications(one Write->Read relation) between CTAs in whole application
+	\item Volume Density: Number of bytes transferred in whole application
+	\item Sparcity: Stride in data Communicated via Scatter/Gather
+\end{itemize}
+\section{Analysis of Communication}
+\section{HW Architecture Impact}
+\section{Conclusions for MultiGPU systems}
