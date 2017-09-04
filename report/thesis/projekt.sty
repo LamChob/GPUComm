@@ -22,12 +22,13 @@
 
  
 % default prefix for all graphics
-\graphicspath{{img/}}
+\graphicspath{{../data/}}
 
 % define some custome colors
 \definecolor{lightblue}{rgb}{0.780, 0.768, 0.992}
 \definecolor{lightyellow}{RGB}{255, 250, 205}
 \definecolor{lightgray}{RGB}{235, 235, 235}
+\definecolor{darkgray}{RGB}{80, 80, 80}
 
 % Create index.
 %\makeindexkeyvals
@@ -105,16 +106,16 @@
 	basicstyle=\footnotesize\ttfamily,
 }
 % Set Style for Perl
-\lstdefinestyle{perl} {
+\lstdefinestyle{C} {
 	breaklines=true,
-	language=Perl,
+	language=C,
 	showspaces=false,
 	keepspaces=true,
 	frame=0,
 	tabsize=4,
 	backgroundcolor=\color{lightgray},
 	keywordstyle=\color{blue},
-	commentstyle=\color{green},
+	commentstyle=\color{darkgray},
 	numbers=left,
 	numbersep=5pt,
 	numberstyle = \tiny\color{gray},
