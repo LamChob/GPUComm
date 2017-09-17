@@ -7,4 +7,21 @@
 	\item ... Pointer analysis
 	\item ... Versioning
 
+\begin{table}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline 
+		Name & Scope & Access & Bandwidth & Latency & Capacity & Location \\ 
+		\hline 
+		Shared Memory & CTA & RAM & high & low & low (48k) & Streaming Multiprocessor \\ 
+		\hline 
+		Global Memory & GPU & RAM & high & high & medium & device \\ 
+		\hline 
+		Texture/Constant & GPU & ROM & high & high & medium & device \\ 
+		\hline 
+		Host-Mapped Memory & GPU+CPU & RAM & low & high & high & host \\ 
+		\hline 
+	\end{tabular} 
+	\caption{GPU Memory Types, move to Background chapter}
+	\label{GPUMemTable}
+\end{table}
 \end{itemize}
