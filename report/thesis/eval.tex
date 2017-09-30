@@ -1,14 +1,20 @@
 \chapter{Evaluation and Analysis of GPU Communication}\label{eval}
 Define what communication means in our context. (Write->Read between different CTAs etc...)
+
+--->> Explain hierarchy of analysis. Highest level watches as application as a whole. \\
+going deeper into varius dimensions:\\
+Different Kernels\\
+BSP Boundaries\\
+CTAs\\\\
+
 \section{Evaluated Applications}
 	Set of Functions that can display a communicating behavior, tend to be iterative kernels
 \begin{itemize}
-	\item Histogram
-	\item Stencil (CG Code)
-	\item Stencil (Rodinia 3D)
-	\item NBody
-	\item Graphs, for more irregular access patterns
-	\item Reduction (Included in CG)
+	\item Histogram (CUDA Suite)
+	\item Stencil (Rodinia 2D, 3D)
+	\item NBody (CEG)
+	\item BFS (Rodinia)
+	\item Pathfinder (Rodinia)
 \end{itemize}
 \section{Analysis Parameters}
 \subsection{Communication Classes}
@@ -20,6 +26,7 @@ Define what communication means in our context. (Write->Read between different C
 \end{itemize}
 \subsection{Communication Metrics}
 \begin{itemize}
+	\item Write-to-Read ratio
 	\item Transfer Size Histogram: Data Transferred in one Communication between two CTAs
 	\item Transfer Density: Number of Communications(one Write->Read relation) between CTAs in whole application
 	\item Volume Density: Number of bytes transferred in whole application
