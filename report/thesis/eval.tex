@@ -1,11 +1,6 @@
 \chapter{Evaluation and Analysis of GPU Communication}\label{eval}
-Define what communication means in our context. (Write->Read between different CTAs etc...)
-
---->> Explain hierarchy of analysis. Highest level watches as application as a whole. \\
-going deeper into varius dimensions:\\
-Different Kernels\\
-BSP Boundaries\\
-CTAs\\\\
+This chapter examines anylsis results of the traces generated with the technique described in chapter \ref{chap:impl}.
+The analysis will focus on aggregated statistics, rather than averaging. 
 
 \section{Evaluated Applications}
 	Set of Functions that can display a communicating behavior, tend to be iterative kernels
@@ -16,22 +11,30 @@ CTAs\\\\
 	\item BFS (Rodinia)
 	\item Pathfinder (Rodinia)
 \end{itemize}
-\section{Analysis Parameters}
-\subsection{Communication Classes}
-\begin{itemize}
-	\item P2P: One Writer, one Reader
-	\item Scatter: One Writer, Multiple Readers
-	\item Gather: Multiple Writes, one Reader
-	\item Synchronization: Atomic access to one Address by multiple CTAs
-\end{itemize}
-\subsection{Communication Metrics}
-\begin{itemize}
-	\item Write-to-Read ratio
-	\item Transfer Size Histogram: Data Transferred in one Communication between two CTAs
-	\item Transfer Density: Number of Communications(one Write->Read relation) between CTAs in whole application
-	\item Volume Density: Number of bytes transferred in whole application
-	\item Sparcity: Stride in data Communicated via Scatter/Gather
-\end{itemize}
-\section{Analysis of Communication}
-\section{HW Architecture Impact}
-\section{Conclusions for MultiGPU systems}
+%\section{Analysis Parameters}
+%\subsection{Communication Classes}
+%\begin{itemize}
+%	\item P2P: One Writer, one Reader
+%	\item Scatter: One Writer, Multiple Readers
+%	\item Gather: Multiple Writes, one Reader
+%	\item Synchronization: Atomic access to one Address by multiple CTAs
+%\end{itemize}
+%\subsection{Communication Metrics}
+%\begin{itemize}
+%	\item Write-to-Read ratio
+%	\item Transfer Size Histogram: Data Transferred in one Communication between two CTAs
+%	\item Transfer Density: Number of Communications(one Write->Read relation) between CTAs in whole application
+%	\item Volume Density: Number of bytes transferred in whole application
+%	\item Sparcity: Stride in data Communicated via Scatter/Gather
+%\end{itemize}
+\section{Level I Analysis}
+\subsection{Density Plots}
+\subsection{Communication Fraction}
+\subsection{CTA In/Out-Degree}
+\subsection{Msg-size Histogram/CDF}
+\section{Level II Analysis}
+\subsection{Kernel communication Evolution}
+\subsection{Bisection Bandwidth}
+\section{Level III Analysis}
+\subsection{Philandering}
+\subsection{ComPartner Ratio Evolution}

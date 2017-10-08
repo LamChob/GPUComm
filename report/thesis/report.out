@@ -2,32 +2,47 @@
 \BOOKMARK [1][-]{section.1.1}{Goal}{chapter.1}% 2
 \BOOKMARK [1][-]{section.1.2}{Outline}{chapter.1}% 3
 \BOOKMARK [0][-]{chapter.2}{Background}{}% 4
-\BOOKMARK [0][-]{chapter.3}{Related Work}{}% 5
-\BOOKMARK [1][-]{section.3.1}{GPU Application Characterization}{chapter.3}% 6
-\BOOKMARK [1][-]{section.3.2}{GPU Code Instrumentation}{chapter.3}% 7
-\BOOKMARK [1][-]{section.3.3}{MPI Communication Traces}{chapter.3}% 8
-\BOOKMARK [0][-]{chapter.4}{Methodology}{}% 9
-\BOOKMARK [1][-]{section.4.1}{GPU Shared Memory Communication}{chapter.4}% 10
-\BOOKMARK [1][-]{section.4.2}{Analysis Space Exploration}{chapter.4}% 11
-\BOOKMARK [2][-]{subsection.4.2.1}{Premises and Simplifications}{section.4.2}% 12
-\BOOKMARK [2][-]{subsection.4.2.2}{Collective Communication}{section.4.2}% 13
-\BOOKMARK [0][-]{chapter.5}{Dynamic Instrumentation Using Code Analysis And Transformation For Detailed GPU Communication Analysis}{}% 14
-\BOOKMARK [1][-]{section.5.1}{Trace Setup}{chapter.5}% 15
-\BOOKMARK [2][-]{subsection.5.1.1}{Build Process}{section.5.1}% 16
-\BOOKMARK [2][-]{subsection.5.1.2}{Trace Format}{section.5.1}% 17
-\BOOKMARK [1][-]{section.5.2}{Source to Source Compilation in Clang}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.3}{Code Transformation in LLVM}{chapter.5}% 19
-\BOOKMARK [2][-]{subsection.5.3.1}{Address Space Analysis}{section.5.3}% 20
-\BOOKMARK [2][-]{subsection.5.3.2}{Instrumentation}{section.5.3}% 21
-\BOOKMARK [1][-]{section.5.4}{Tracing Process}{chapter.5}% 22
-\BOOKMARK [2][-]{subsection.5.4.1}{On-Device Producer}{section.5.4}% 23
-\BOOKMARK [2][-]{subsection.5.4.2}{Host Consumer}{section.5.4}% 24
-\BOOKMARK [0][-]{chapter.6}{Evaluation and Analysis of GPU Communication}{}% 25
-\BOOKMARK [1][-]{section.6.1}{Evaluated Applications}{chapter.6}% 26
-\BOOKMARK [1][-]{section.6.2}{Analysis Parameters}{chapter.6}% 27
-\BOOKMARK [2][-]{subsection.6.2.1}{Communication Classes}{section.6.2}% 28
-\BOOKMARK [2][-]{subsection.6.2.2}{Communication Metrics}{section.6.2}% 29
-\BOOKMARK [1][-]{section.6.3}{Analysis of Communication}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.4}{HW Architecture Impact}{chapter.6}% 31
-\BOOKMARK [1][-]{section.6.5}{Conclusions for MultiGPU systems}{chapter.6}% 32
-\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 33
+\BOOKMARK [1][-]{section.2.1}{Bulk Synchronous Parallel}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.2}{General Purpose GPU Compuing}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{Execution Model}{section.2.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.2}{Memory Model}{section.2.2}% 8
+\BOOKMARK [1][-]{section.2.3}{LLVM}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.3.1}{LLVM IR Program Representation}{section.2.3}% 10
+\BOOKMARK [2][-]{subsection.2.3.2}{Static Single Assignement}{section.2.3}% 11
+\BOOKMARK [2][-]{subsection.2.3.3}{LLVM Pass}{section.2.3}% 12
+\BOOKMARK [1][-]{section.2.4}{Compiler Techniques}{chapter.2}% 13
+\BOOKMARK [2][-]{subsection.2.4.1}{Data Flow Analysis}{section.2.4}% 14
+\BOOKMARK [2][-]{subsection.2.4.2}{Function Specialization}{section.2.4}% 15
+\BOOKMARK [0][-]{chapter.3}{Related Work}{}% 16
+\BOOKMARK [1][-]{section.3.1}{GPU Application Characterization}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.2}{GPU Code Instrumentation}{chapter.3}% 18
+\BOOKMARK [0][-]{chapter.4}{Methodology}{}% 19
+\BOOKMARK [1][-]{section.4.1}{GPU Shared Memory Communication}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.2}{Analysis Space Exploration}{chapter.4}% 21
+\BOOKMARK [2][-]{subsection.4.2.1}{Analysis Methods}{section.4.2}% 22
+\BOOKMARK [2][-]{subsection.4.2.2}{Caveats}{section.4.2}% 23
+\BOOKMARK [0][-]{chapter.5}{Dynamic Instrumentation Using Code Analysis And Transformation For Detailed GPU Communication Analysis}{}% 24
+\BOOKMARK [1][-]{section.5.1}{Trace Setup}{chapter.5}% 25
+\BOOKMARK [2][-]{subsection.5.1.1}{Build Process}{section.5.1}% 26
+\BOOKMARK [2][-]{subsection.5.1.2}{Trace Format}{section.5.1}% 27
+\BOOKMARK [1][-]{section.5.2}{Source to Source Compilation in Clang}{chapter.5}% 28
+\BOOKMARK [1][-]{section.5.3}{Code Transformation in LLVM}{chapter.5}% 29
+\BOOKMARK [2][-]{subsection.5.3.1}{Address Space Analysis}{section.5.3}% 30
+\BOOKMARK [2][-]{subsection.5.3.2}{Instrumentation}{section.5.3}% 31
+\BOOKMARK [1][-]{section.5.4}{Tracing Process}{chapter.5}% 32
+\BOOKMARK [2][-]{subsection.5.4.1}{On-Device Producer}{section.5.4}% 33
+\BOOKMARK [2][-]{subsection.5.4.2}{Host Consumer}{section.5.4}% 34
+\BOOKMARK [0][-]{chapter.6}{Evaluation and Analysis of GPU Communication}{}% 35
+\BOOKMARK [1][-]{section.6.1}{Evaluated Applications}{chapter.6}% 36
+\BOOKMARK [1][-]{section.6.2}{Level I Analysis}{chapter.6}% 37
+\BOOKMARK [2][-]{subsection.6.2.1}{Density Plots}{section.6.2}% 38
+\BOOKMARK [2][-]{subsection.6.2.2}{Communication Fraction}{section.6.2}% 39
+\BOOKMARK [2][-]{subsection.6.2.3}{CTA In/Out-Degree}{section.6.2}% 40
+\BOOKMARK [2][-]{subsection.6.2.4}{Msg-size Histogram/CDF}{section.6.2}% 41
+\BOOKMARK [1][-]{section.6.3}{Level II Analysis}{chapter.6}% 42
+\BOOKMARK [2][-]{subsection.6.3.1}{Kernel communication Evolution}{section.6.3}% 43
+\BOOKMARK [2][-]{subsection.6.3.2}{Bisection Bandwidth}{section.6.3}% 44
+\BOOKMARK [1][-]{section.6.4}{Level III Analysis}{chapter.6}% 45
+\BOOKMARK [2][-]{subsection.6.4.1}{Philandering}{section.6.4}% 46
+\BOOKMARK [2][-]{subsection.6.4.2}{ComPartner Ratio Evolution}{section.6.4}% 47
+\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 48
