@@ -34,15 +34,15 @@
 \BOOKMARK [2][-]{subsection.5.4.2}{Host Consumer}{section.5.4}% 34
 \BOOKMARK [0][-]{chapter.6}{Evaluation and Analysis of GPU Communication}{}% 35
 \BOOKMARK [1][-]{section.6.1}{Evaluated Applications}{chapter.6}% 36
-\BOOKMARK [1][-]{section.6.2}{Level I Analysis}{chapter.6}% 37
-\BOOKMARK [2][-]{subsection.6.2.1}{Density Plots}{section.6.2}% 38
-\BOOKMARK [2][-]{subsection.6.2.2}{Communication Fraction}{section.6.2}% 39
-\BOOKMARK [2][-]{subsection.6.2.3}{CTA In/Out-Degree}{section.6.2}% 40
+\BOOKMARK [1][-]{section.6.2}{Tier I Analysis}{chapter.6}% 37
+\BOOKMARK [2][-]{subsection.6.2.1}{Communication Fraction}{section.6.2}% 38
+\BOOKMARK [2][-]{subsection.6.2.2}{Density Map}{section.6.2}% 39
+\BOOKMARK [2][-]{subsection.6.2.3}{Volume Map}{section.6.2}% 40
 \BOOKMARK [2][-]{subsection.6.2.4}{Msg-size Histogram/CDF}{section.6.2}% 41
-\BOOKMARK [1][-]{section.6.3}{Level II Analysis}{chapter.6}% 42
-\BOOKMARK [2][-]{subsection.6.3.1}{Kernel communication Evolution}{section.6.3}% 43
-\BOOKMARK [2][-]{subsection.6.3.2}{Bisection Bandwidth}{section.6.3}% 44
-\BOOKMARK [1][-]{section.6.4}{Level III Analysis}{chapter.6}% 45
-\BOOKMARK [2][-]{subsection.6.4.1}{Philandering}{section.6.4}% 46
-\BOOKMARK [2][-]{subsection.6.4.2}{ComPartner Ratio Evolution}{section.6.4}% 47
+\BOOKMARK [2][-]{subsection.6.2.5}{CTA In/Out-Degree}{section.6.2}% 42
+\BOOKMARK [2][-]{subsection.6.2.6}{Bisection Volume}{section.6.2}% 43
+\BOOKMARK [1][-]{section.6.3}{Tier II Analysis}{chapter.6}% 44
+\BOOKMARK [2][-]{subsection.6.3.1}{Kernel communication Evolution}{section.6.3}% 45
+\BOOKMARK [1][-]{section.6.4}{Tier III Analysis}{chapter.6}% 46
+\BOOKMARK [2][-]{subsection.6.4.1}{Philandering}{section.6.4}% 47
 \BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 48
