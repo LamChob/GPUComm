@@ -1,13 +1,17 @@
 \chapter{Related Work}
 \section{GPU Application Characterization}
-Since GPGPU computing exists, there are publications characterizing GPU application. This happens usually on
-two levels. Either, the whole application, with all it's kernels and iterations is examined, or low-level 
-features like branch divergence or cache misses are subject to the research.
+Since GPGPU computing exists, there are publications characterizing GPU application. Generally, the analysis
+aspects can be separated into high-level, low-level . The former treats an application as a black-box
+and measures behaviour of the complete application. Latter inspects hardware level behaviour without
+beeing concerned, which part of the program is executed. Most research papers report how changes in software or hardware influence certain aspects of low-level or high-level analysis.
 
-Works like \cite{}, \cite{} or  \cite{} broadly analyse whole applications on a superficial level, without looking at the interactions of different elements inside the application. Metrics used are ...
+High-level research often reports speed-up () resulting from a change in hardware or software. [] et al. report on power efficiency and performance. 
+It is also concerned with configuration, such as launch configurations and number of kernels (). Wang et al.[] report on how dynamic programming affects kernel count and launch configurations of irregular workloads. Subsequently the report how this affects low-level metrics like memory access and control flow.
 
-Publication like \cite{} or \cite{} focus on the impact of architectural changes on applications. The paper \cite{} focusses on the impact of the dynamic parallelism on GPU workloads. 
-However, to the best  knowledge of the author, there are no publication researching intra-application communication.
+Low-level can be devided into memory and exection.
+Research concerned with GPU memory behaviour report L2 cache hits/efficiency ([]), global memory load/store counters ([][]) or use these numbers together with instruction replay and coalescing to create metrics like memory intensity ([]) or regularity ([]).  Execution research is concerned with control-flow, instruction counts, and occupancy.
+
+To the best  knowledge of the author, there are no publication researching intra-application interactions.
 %\begin{itemize}
 %	\item Usually see Application not as a set of different kernels and ignore kernel "interactions"...
 %	\item ... or go down to instruction/warp 
