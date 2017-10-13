@@ -36,8 +36,8 @@ The coarsest granularity would be a complete application with multiple kernels a
 The temporal dimensions describes the series of executed BSP supersteps. Without this dimension, there is no communication to analyse, because by our definition, communication requires at least two subsequent supersteps.
 Again, different granularity can be applied to the analysis. Granularity decreases, as the term to describe the analysis in this dimension becomes more and more specific. The coarsest granularity ignores individual kernels and exclusively looks at the interaction between the existing supersteps. At finer granularities, the number of supersteps in the analysis may change, because only the interaction of two distinct kernels $k1$ and $k2$ across time $t$ is of interest.
 
-\subsection{Analysis Methods}
-Based on the dimensions and granularities, different levels for the analysis can be defined.
+\subsection{Analysis Methods}\label{methodik:methods}
+Based on the dimensions and granularities, different tiers for the analysis can be defined.
 \begin{enumerate}[I]
 	\item Kernel behaviour across all supersteps
 	\item Kernel interactions across two supersteps
