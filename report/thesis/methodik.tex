@@ -2,7 +2,7 @@
 This chapter explores how GPUs convey information using a shared memory and defines what communication means in the context of this work. Using this definition, the analysis space is described and explored.
 \section{GPU Shared Memory Communication}
 Other than the explicit communication routines of MPI like send and receive, GPUs convey information implicitly via the global memory on the device. 
-The CUDA execution model and the given guarantees can be mapped to the Bulk-Synchronous-Parallel (BSP) bridging model, explained in \ref{bsp}.
+The CUDA execution model and the given guarantees can be mapped to the Bulk-Synchronous-Parallel (BSP) bridging model, explained in \ref{sec:bsp}.
 \begin{itemize}
 	\item \textbf{Computation} is a kernel executed on the GPU. The local processors in the model are represented by CTAs on a GPU, each processing it's own workload without the ability to directly
 	interact with other CTAs.
