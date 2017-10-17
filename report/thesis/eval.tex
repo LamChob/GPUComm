@@ -8,25 +8,27 @@ The evaluated application are listed in table \ref{eval-apps}. The applications 
 	\centering
 \begin{tabular}{|l|c|c|c|c|}
 	\hline 
-	Application & Source & Dwarf & Abbreviation & Configuration \\ 
+	\textbf{Application} & \textbf{Source} & \textbf{Domain} & \textbf{Abbreviation} &\textbf{Problem Size} \\ 
 	\hline 
-	Histogram64 & CUDA SDK & Histogram & hist& a\\ 
-	\hline 
-	Hotspot 2D & Rodinia & Structured Grid 2D & hs2d & a\\ 
-	\hline 
-	Hotspot 3D & Rodinia & Structured Grid 3D & hs3d& a\\ 
-	\hline 
-	Pathfinder & Rodinia & Pathfinder & path& a\\ 
-	\hline 
-	Breadth First Seach & Rodinia & Graphs/Unstructured Grid & bfs& a\\ 
-	\hline 
-	NBody & ZiTi CEG & Nbody & nbody& a\\ 
+
+%	\hline 
+	Hotspot 2D & Rodinia & Structured Grid 2D & hs2d & 512x512, t = 10\\ 
+%	\hline 
+	Hotspot 3D & Rodinia & Structured Grid 3D & hs3d& 512x512x8, t = 10\\ 
+%	\hline 
+	Histogram64 & CUDA SDK & Histogram & hist& 64MB into 64 Bins\\ 
+	NBody & ZiTi CEG & Nbody & nbody& 512 Bodies, t = 5\\ 
+	Pathfinder & Rodinia & Shortest Path & path& 100000x100x20\\ 
+%	\hline 
+	Breadth First Seach & Rodinia & Graph Processing & bfs& $10^{6}$ Nodes\\ 
+%	\hline 
+
 	\hline 
 \end{tabular} 
 \caption{Application used for communication evaluation}
 \label{eval-apps}
 \end{table}
-\textit{Hist}, \textit{hs2d}, \textit{hs3d} and \textit{nbody} are more regular applications, where each CTA only operates within his data region. \textit{BFS} and \textit{path} tend to more irregularity, as the execution is more dynamic and the behaviour is more depended on the input data. 
+\textit{Hist}, \textit{hs2d}, \textit{hs3d} and \textit{nbody} are regular applications, where each CTA only operates within his data region. \textit{BFS} and \textit{path} contain irregularity, as the execution is  dynamic and the behaviour is depended on the input data.
 \section{Tier I Analysis}
 \subsection{Total Data Volume and Communication Fraction}
  Figure \ref{com-ratio} directly compares the total data volume of loads and stores of and how much of these write volume is involved in communication. At least 30\% of any application of all writes is accessed by another CTA or another kernel in following iterations.
@@ -181,8 +183,21 @@ As expects, the data of all regular applications follow a pattern, while the one
 	\caption{Volume of communication loads and stores in each iteration}
 	\label{trans-ratio}
 \end{figure}
+\subsection{Superstep Distance}
+This metric measures the volume of data transferred, but takes into account the number of supersteps distance between the store and the subsequent load. Only \textit{bfs} shows this behaviour,
+figure \ref{trans-distance} shows only the volume for this application. The distance describes the number
+of supersteps, or kernel launches, happening before written data is read by a CTA. A distance of zero means, the directly succeeding kernel reads the data.
 
+Read operations in different supersteps can reference the same write, therefore the volumes are not exclusive.
+As an example, a subset of distance zero might very well be included in more distant reads.
+\begin{figure}[t]
+	\centering
+	\includegraphics[height=0.3\textheight]{../../../Global-Memory-Tracing/memtrace-pass/plots/distances}
+	\caption{Volume of communication for \textit{bfs} application, separated by superstep distance.}
+	\label{trans-distance}
+\end{figure}
 \section{Tier III Analysis}
+
 \subsection{CTA connectivity evolution}
 As shown in figure \ref{fig:Cta-degree}, most applications have a steady number incoming and outgoing connections. Figure \ref{philandering} shows how the mean number of outgoing communication partners changes over time, including the standard deviation. 
 

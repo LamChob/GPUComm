@@ -1,2 +1,22 @@
 \chapter{Conclusion}
-The goal of this were the creation of tooling on the compiler level to generate trace data in GPU applications, and the analysis of these traces.
+The first goal of this work was to use compilers to create  instrumentation, that makes detailed communication analysis in
+GPU applications possible. GPUs are shared memory system and information can only be passed via global memory. Therefore, global memory operations are instrumented to create detailed memory access traces. The implemented solution introduces code on both, host and device to create a dynamic producer-consumer buffer system, allowing unlimited data generation. Host side modifications are performed in a Clang front-end plugin, as they are rather trivial.
+Due to lowering and canonicalizations by the compiler, identifying global memory access instructions in device code is not straight forward and requires detailed code analysis and transformation. Analysis and transformation happen in 
+LLVM IR, which allows a more efficient code analysis due to it's SSA properties.
+
+Using the memory traces created by the instrumented, chapter \ref{eval} analysed the communication, as defined in \ref{methodik}. All applications showed that at least 30\% of all writes is later consumed by a communication partner. Both, incoming and outgoing communication has collective tendencies is and is rarely point-to-point. Communication is dominated by few different messages sizes in each application, usually packed tightly in memory. How the number
+of communication partners and the communicated volumes behave over time, depends on the type of applications. Regular application with one kernel show no variance. Regular applications with multiple kernels show fluctuations, depending on the
+kernel. Irregular applications show growing irregularities over time. Analysing the bisection volume shows, that most applications would benefit from more efficient GPU-to-GPU communication, as the share of data communicated across 
+a bisection can be substantial. Only one application showed communication that could span several supersteps.
+
+\section{Future Work}
+The work on this project can be continued on both the tooling and the analysis aspect. For the tooling, a more complex trace
+format that allows compressing coalesced memory access and the expression of access ranges of warp can reduce the impact on 
+the runtime. Adding additional analysis features, like \verb|inline asm| for ptx analysis and the support for macros 
+line \verb|ldg()| increase the range of applications that can be traced. To increase the range of supported applications, support of OpenCL could be implemented.
+
+The analysis can be extended in both breadth and depth. Analysing more application can yield new insights, not yet present
+in the analysis. A deeper analysis of specific applications can lead to an improved understanding of a single application,
+revealing options for optimization.
+
+Ultimately, a model for multi-gpu scalability could be derived from the analysis data.
