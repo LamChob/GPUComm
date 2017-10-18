@@ -1,7 +1,7 @@
 \chapter{Related Work}
 \section{GPU Application Characterization}
 Since GPGPU computing exists, there are publications characterizing GPU application. Generally, the analysis
-aspects can be separated into high-level, low-level . The former treats an application as a black-box
+aspects can be separated into high-level and low-level . The former treats an application as a black-box
 and measures behaviour of the complete application. Latter inspects hardware level behaviour without
 beeing concerned, which part of the program is executed. Most research papers report how changes in software or hardware influence certain aspects of low-level or high-level analysis.
 
@@ -11,7 +11,7 @@ It is also concerned with configuration, such as launch configurations and numbe
 Low-level can be devided into memory and exection.
 Research concerned with GPU memory behaviour report L2 cache hits/efficiency (\cite{microarch}), global memory load/store counters (\cite{microarch}, \cite{6983039}) or use these numbers together with instruction replay and coalescing to create metrics like memory intensity (\cite{Kerr:2009:CAP:1678998.1680778}) or regularity (\cite{Burtscher:2012:QSI:2473499.2474126}).  Execution research is concerned with control-flow, instruction counts, and occupancy (\cite{microarch}, \cite{Kerr:2009:CAP:1678998.1680778}).
 
-To the best  knowledge of the author, there are no publication researching intra-application interactions.
+To the best  knowledge of the author, there are no publication researching intra-application interactions of kernels or CTAs.
 %\begin{itemize}
 %	\item Usually see Application not as a set of different kernels and ignore kernel "interactions"...
 %	\item ... or go down to instruction/warp 
@@ -25,10 +25,11 @@ Instrumenting existing application with addition code for memory tracing is esse
 A framework for code instrumentation is presented in "Lynx: A Dynamic Instrumentation System for Data-Parallel Applications on GPGPU Architectures" \cite{Farooqui:2012:LDI:2310660.2310989} by Farooqui et al. Lynx is a framework including a C-to-PTX JIT, that extends CUDA code on PTX instruction level and a runtime, displayed in \ref{lynx-rt}. The user writes instrumentation specification in a C-style language. The specification is translated to PTX and inserted into the original application.
 
 The application can be instrumented on kernel, basic block and instruction level. An API offers access to CUDA constructs like Thread and CTA IDs, CTA barriers and instruction counts. To increase
-efficiency, it is possible that only one thread in a warp performs the specified trace operation. It is possible to access shared and global memory space. The runtime fetches all generated data from the device after the application has finished.
+efficiency, it is possible that only one thread in a warp performs the specified trace operation. It is possible to access shared and global memory space. The runtime manages all buffers introduced by the instrumentation, including the movement from and to the device.
 
 There are two reasons, Lynx is not suitable for this project. First, while it is possible to instrument global memory operations, we found no way to access details about the instrumented instruction, like target address or type size. However, address information is crucial for this work. The second reason
-is the runtime handling the data buffers. As the generated trace data can be very big, device memory would not suffice to hold all the data, and creating a dynamic producer-consumer buffer using Lynx seemed not feasible. 
+is the runtime handling the data buffers. As the generated trace data can be very big, device memory would not suffice to hold all the data, and creating a dynamic producer-consumer buffer using Lynx is not possible.
+To the knowledge of the author, there is no performance analysis beyond metric counters available for GPUs.
 \begin{figure}[t]
 	\centering
 	\includegraphics[trim={2.5cm 0 4cm 0},clip,width=\textwidth]{lynx-rt}

@@ -4,14 +4,12 @@ This chapter explores how GPUs convey information using a shared memory and defi
 Other than the explicit communication routines of MPI like send and receive, GPUs convey information implicitly via the global memory on the device. 
 The CUDA execution model and the given guarantees can be mapped to the Bulk-Synchronous-Parallel (BSP) bridging model, explained in \ref{sec:bsp}.
 \begin{itemize}
-	\item \textbf{Computation} is a kernel executed on the GPU. The local processors in the model are represented by CTAs on a GPU, each processing it's own workload without the ability to directly
-	interact with other CTAs.
-	\item \textbf{Communication} in this step data generated in the computation step is placed in a location where it can be accessed by the processor using the data in a following superstep. For GPUs this location is 
+	\item \textbf{Computation} is a kernel executed on the GPU. The local components in the model are represented by CTAs on a GPU. Although BSP allows shared memory interactions, CUDA does not, therefore  each CTA is processing it's own workload without the ability to directly interact with other CTAs. 
+	\item \textbf{Communication} in this step data generated in the computation step is placed in a location where it can be accessed by a component using the data in a following superstep. For GPUs this location is 
 	global memory, because it is modifiable by a kernel during execution and it's modifications persist beyond kernel completion boundaries. In other words, global memory is a memory area allowing visible side-effects
 	of a kernel execution.
 	\item \textbf{Synchronization} on the GPU happens implicitly by the kernel completion boundary. It guarantees visibility of all global memory operations by the kernel. This implies that follow-up supersteps can see the memory modifications. Just as the barrier in BSP makes sure the communication step
-	has been completed by all processors.
-	
+	has been completed by all processors. Partial synchronization is only possble if kernels are members of different streams.
 \end{itemize} 
  Not all of the side-effects mentioned above however, can be classified as communication. In the context of this work, communication is data that is written to global memory by one thread and read by another. The CUDA consistency model allows reliable communication only across kernel completion boundaries. We only consider elements that are communicated reliably.
 
@@ -29,12 +27,12 @@ This representation works for all levels of granularity in the hierarchy of the 
 
 \section{Analysis Space Exploration}
 
-The analysis space for this work can be separated into spatial and temporal dimensions. The spatial dimension includes the layered hierarchy of threads, CTAs and Kernels. Each each layer is the superset of the its components. For example, the total data volume written by a kernel is the sum of all its CTA's writes. 
+The analysis space for this work can be separated into spatial and temporal dimensions. The spatial dimension includes the layered hierarchy of threads, CTAs and Kernels. Each hierarchy layer is the superset of the underlying layers. For example, the total data volume written by a kernel is the sum of all its CTA's writes. 
 Granularity determines how detailed the spatial dimension is analysed.
 The coarsest granularity would be a complete application with multiple kernels and iterations, and the finest a single thread. For this work however, CTAs are used as the finest granularity. The spatial dimension can help characterize an application, but by itself cannot describe communication.
 
 The temporal dimensions describes the series of executed BSP supersteps. Without this dimension, there is no communication to analyse, because by our definition, communication requires at least two subsequent supersteps.
-Again, different granularity can be applied to the analysis. Granularity decreases, as the term to describe the analysis in this dimension becomes more and more specific. The coarsest granularity ignores individual kernels and exclusively looks at the interaction between the existing supersteps. At finer granularities, the number of supersteps in the analysis may change, because only the interaction of two distinct kernels $k1$ and $k2$ across time $t$ is of interest.
+Again, different granularity can be applied to the analysis. Granularity refines, as the term to describe the analysis in this dimension becomes more and more specific. The coarsest granularity ignores individual kernels and exclusively looks at the interaction between the existing supersteps. At finer granularities, the number of supersteps in the analysis may change, because only the interaction of two distinct kernels $k1$ and $k2$ across time $t$ is of interest.
 
 \subsection{Analysis Methods}\label{methodik:methods}
 Based on the dimensions and granularities, different tiers for the analysis can be defined.
@@ -43,7 +41,7 @@ Based on the dimensions and granularities, different tiers for the analysis can 
 	\item Kernel interactions across two supersteps
 	\item CTA interactions across two supersteps
 \end{enumerate}
-While the granularity gets finer, all levels try to use accumulated analysis results, rather than mean oder median values.
+The analysis tries to avoid averaging and instead use aggregated values and relational metrics for comparison and analysis.
 
 
 \subsection{Caveats}\label{collectives}
@@ -53,4 +51,6 @@ While the granularity gets finer, all levels try to use accumulated analysis res
 	For the sake of the analysis, each collective communication ($\textrm{\{n:1\} \{1:n\} or \{n:n\}} $) can be viewed as a set of point-to-point communications, happening at the same time.
 	\item  A kernel execution is a BSP superstep and is serialized with follow-up kernel iterations, or supersteps. Each stream is treated as
 	an individual sequence of BSP supersteps during the execution. Stream interactions can be recreated in the follow-up analysis.
+	\item Communication across BSP steps, honouring the guarantees CUDA's execution model gives, is not bound to any timing or ordering during the execution of a single compute kernel. Negative performance impacts by the instrumentation are therefore tolerated, 
+	because in a well-written program the negative impact does not impede the correctness.
 \end{itemize}
