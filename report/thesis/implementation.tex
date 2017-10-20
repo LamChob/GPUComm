@@ -117,23 +117,6 @@ a kernel, where a global address space pointer can be obtained from.
 	\item pointer type load from global memory
 \end{itemize}
 Collecting base pointers form all these sources provides starting points for a sparse analysis of the program. From the def-use chain of each pointer and recursively following each users new definitions, a usage tree for each of base pointers forms. And only memory operations that are part of def-use trees which root in the global memory pointers, can be a candidate for instrumentation.
-
-%	\begin{defi}
-%	$	MOp = \{\textrm{LoadInst, StoreInst, atomicInst}\} $
-%	\end{defi}
-%	\begin{defi}
-%	$   POp = \{ \textrm{LoadInst of Type Ptr, GetElementPtr, CastInst, Arg of CallInst} \} $
-%	\end{defi}
-%	\begin{defi}must
-%	$	NMOp = \{inst : inst \notin POp, inst \notin MOp\}$
-%	\end{defi}
-
-
-%	\centering
-%	\includegraphics[height=0.3\textwidth]{lattice}
-%	\caption{Property space lattice}
-%	\label{ptr-analysis}
-
 The used algorithm performs an its analysis on the sparse program representation of def-use chains, created by the SSA form of LLVM IR. Because the the algorithm follows the order of instructions through the program, because only with proper instruction order we can obtain the address space information correctly, the analysis is 'flow sensitive'. The location and arguments of function calls matters for our analysis, for reasons later in this section. This classifies our algorithm as 'context sensitive'.
 The property space of the analysis describes sets of instructions ($...Inst$) in the context of global memory operations that are defined
 as following:
@@ -202,7 +185,7 @@ else
 		\centering
 		\includegraphics[width=\textwidth]{phinode2}
 	\end{minipage}\hfill
-	\caption{Example for static analysis limitations. Different colors represent different address spaces. The left graph represents the generic problem case and right graph a special case that is resolvable by the analysis.}
+	\caption[$\phi$-node Limitations]{Example for static analysis limitations. Different colors represent different address spaces. The left graph represents the generic problem case and right graph a special case that is resolvable by the analysis.}
 	\label{phinodes}
 \end{figure}
 
@@ -407,7 +390,7 @@ if (lane_id == lowest )
 	
 	Notice that in this case, the conditions for fetching the id now takes into account that data is written in blocks and has to check if there is still space left for one complete block. 
 	
-	Assuming a warp is fully populated warp at the moment a trace happens and thus always reserve enough buffer space for a whole warp can create gaps in the trace data. To prevent old data from lingering, the buffer would need to be wiped after every evacuation of the
+	Assuming a warp is fully populated at the moment of a trace, and thus always reserves enough buffer space for a whole warp, can create gaps in the trace data. To prevent old data from lingering, the buffer would need to be wiped after every evacuation of the
 	generated trace data. Additionally, these gaps would require additional handling in the analysis of the data.
 	Therefore, this more complex approach of handling the consumer was chosen, which only reserved as much space as required.
 

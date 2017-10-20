@@ -200,25 +200,55 @@
 % create new title
 \renewcommand{\maketitle}{
 	\thispagestyle{empty}
-	\begin{center}    
-		{\LARGE \@title\\}
+	\begin{center} 
+		\LARGE Department of Physics and Astronomy \\
+		\LARGE \getBetrieb \\
+		
+		
 		\vfill
 	    %\includegraphics[scale=0.6]{logo-hd}
 	    %\hfill
 	    %\vfill
-		{\Large \getTopic}
+%		{\Large \getTopic}
 		\vfill
-		\parbox{0pt}{
-	        \begin{tabbing}
-	            Name:\hspace{60pt}  \= \@author         \\
-	            Program:           \> \getStudiengang  \\
-	            University:              \> \getBetrieb     \\	            	            Department:              \> \getFackultaet   \\
-	            Institute:              \> \getInstitute     \\
-	            Supervisor:         \> \getSupervisor \\
-	            Date:           \> \today
-	        \end{tabbing}
-	        }
-	        \vfill 
-	\end{center}	
-
+			\Large Master thesis \\
+			\Large in Computer Engineering \\
+			\Large submitted by\\
+			\Large Dennis Sebastian Rieber\\
+			\Large born in Balingen\\
+			\Large 2017
+%	        \begin{tabbing}
+%	            :\hspace{60pt}  \= \@author         \\
+%	            Program:           \> \getStudiengang  \\
+%	            University:              \> \getBetrieb     \\	            	            Department:              \> \getFackultaet   \\
+%	            Institute:              \> \getInstitute     \\
+%	            Supervisor:         \> \getSupervisor \\
+%	            Date:           \> \todayName
+%	        \end{tabbing}
+	\end{center}
+	\pagebreak
+	\thispagestyle{empty}
+	\begin{center}
+			\LARGE \@title \\
+			\Large \getTopic
+		\vfill
+		%\includegraphics[scale=0.6]{logo-hd}
+		%\hfill
+		%\vfill
+		%		{\Large \getTopic}
+		\vfill
+			\large This Master thesis has been carried out by Dennis Sebastian Rieber \\
+			\large at the \\
+			\large \getInstitute\\
+			\large under the supervision of\\
+			\large \getSupervisor\\
+			%	        \begin{tabbing}
+			%	            :\hspace{60pt}  \= \@author         \\
+			%	            Program:           \> \getStudiengang  \\
+			%	            University:              \> \getBetrieb     \\	            	            Department:              \> \getFackultaet   \\
+			%	            Institute:              \> \getInstitute     \\
+			%	            Supervisor:         \> \getSupervisor \\
+			%	            Date:           \> \todayName
+			%	        \end{tabbing}
+	\end{center}
 }

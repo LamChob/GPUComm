@@ -109,10 +109,10 @@ This metric shows the data volume moved a hypothetical cut in each dimension. Th
 \textit{Hs3d} strikes out, as it clearly shows that a cut in the $y$-dimension would not be favourable. The path algorithm shows a very low bisection volume, making it a good candidate for multi-gpu scaling.
 Because of \textit{bfs} very irregular access patterns and high bisection volume and ratio, scaling to multiple GPUs can be challenging. The same goes for \textit{hist} and \textit{nbody}, because they both
 perform all-to all communication. The scalability of the stencil applications depends on the problem, stencil and halo size and halo.
-\begin{figure}[h!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{../../../Global-Memory-Tracing/memtrace-pass/plots/bisection-volume}
-	\caption{Bisection Volume}
+	\caption{Total and relative bisection Volume, separated by dimensions}
 	\label{bisection-vols}
 \end{figure}
 \subsection{Communication Stride}
@@ -121,10 +121,10 @@ The stride in loads and stores involved in communication can be a critical aspec
 The \textit{hist} application shows a large load stride in figure \ref{com-stride}, together with a large in-degree in figure \ref{fig:Cta-degree} suggest a 'gather'-like characteristic. For \textit{hs2d}/\textit{hs3d} we see the expected stride created by the tiling/stencil, accessing multiple rows at once.
 The irregular pattern of \textit{bfs} is caused by the frontier array, which is used to communicate between all CTAs. The stride of nbody
 is
-\begin{figure}[h!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{../../../Global-Memory-Tracing/memtrace-pass/plots/strides}
-	\caption{Communication Stride}
+	\caption{Strides of loads and stores used in communication, by CTA}
 	\label{com-stride}
 \end{figure}
 \subsection{Density Map}

@@ -1,4 +1,4 @@
-	\documentclass[12pt,a4paper]{report}
+\documentclass[12pt,a4paper]{report}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -27,16 +27,18 @@
 \usepackage{subcaption}
 \usepackage{enumerate}
 \usepackage{graphicx}  % remove 'demo' option for your real document
+\usepackage[toc]{appendix}
+
 
 \usepackage{glossaries}
 \makeglossaries
 
 
 \author{Dennis Sebastian Rieber}
-\title{Master Thesis}
-\setTopic{Characterization of GPU Communication}
+\title{Characterization Of GPU Communication}
+\setTopic{A Scientific Exploration}
 \setFackultaet{Department of Physics and Astronomy}
-\setBetrieb{Heidelberg University}
+\setBetrieb{University of Heidelberg}
 \setInstitute{ZITI, Computer Engineering Group}
 \setSupervisor{JProf. Dr. Holger Fröning}
 \setStudiengang{Computer Engineering}
@@ -49,12 +51,30 @@
 
 % preface with roman numbers
 \maketitle
-\newpage % Newpage required for correct pagination
+%\newpage % Newpage required for correct pagination
+\begin{abstract}
+% Moti
+GPU hardware and software continues to scale and understanding applications is crucial for performance
+optimizations.
+% Problem statement
+To the knowledge the author, there is no work concerned with the intra-applications communication in GPUs and
+no instrumentation framework capable of dynamic tracing at GPU runtime.
+%Approach 
+
+This work uses compiler extensions to instrument GPU applications for tracing. The instrumentation adds tracing for all load and store instructions targeting global memory in a GPU. Data is dynamically transferred between from the device to host at run time, through a producer-consumer controlled buffer. 
+%results
+
+Using the generated traces, communication across BSP supersteps is analysed. The analysis shows messages between supersteps are dominated transfer few sizes. The number of communication partners and memory strides
+of communication depend on the application and its regularity.
+%conclusion
+\\\\
+Das ist der Deutsche Abstract
+\end{abstract}
 
 % Roman counting for ToC
 \setcounter{page}{1}
 \pagenumbering{Roman}
-
+\setcounter{page}{1}
 \tableofcontents
 \newpage % Newpage required for correct pagination
 
@@ -71,6 +91,9 @@
 \newcommand{\myequations}[1]{%
 \addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
 
+%\lstlistoflistings\newpage
+\listoffigures\newpage
+\listoftables
 	%\include{praeamble}
 	% Document with regular arabic pagination
 	\pagenumbering{arabic}
@@ -82,24 +105,13 @@
 	\include{implementation}
 	\include{eval}
 	\include{conclusion}
-%	\newpage
-%\newglossaryentry{query}{
-%	name={Query},
-%	description={
-%		Suchanfrage, meist in einer speziellen Syntax. Enthält Informationen über die Suche und die Angeforderten Werte
-%	}		
-%}
 
-% Roman pagination for listing, continuing from ToC 
-%\pagenumbering{Roman}
-%\setcounter{page}{3}
-%\printindex
-%\glsaddall
-%\printglossaries
-%\lstlistoflistings\newpage
-%\listoffigures\newpage
-%\listofmyequations\newpage
-%\singlespacing
 \bibliographystyle{ieeetr}
 \bibliography{report}
+\begin{appendices}
+	\pagenumbering{Roman}
+	\setcounter{page}{4}
+\include{appendix-build}
+\include{appendix-post}
+\end{appendices}
 \end{document}

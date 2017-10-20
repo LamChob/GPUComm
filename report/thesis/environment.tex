@@ -42,7 +42,7 @@ CTA interaction at kernel run-time is not intended. \cite[B5-B7]{cuda-man}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.6\textwidth]{gpu-arch}
-	\caption{GPU thread and memory hierarchy. Image form \cite{}}
+	\caption{GPU thread and memory hierarchy. Image from \cite{}}
 	\label{gpu-hier}
 \end{figure}
 \begin{table}
@@ -63,7 +63,7 @@ CTA interaction at kernel run-time is not intended. \cite[B5-B7]{cuda-man}
 		Host-Mapped  & Kernel+CPU & RAM & low & high & > 20GB & host \\ 
 		\hline 
 	\end{tabular} 
-	\caption{GPU Memory Types, move to Background chapter. \cite[2.3]{cuda-man}}
+	\caption{GPU Memory\cite[2.3]{cuda-man}}
 	\label{GPUMemTable}
 \end{table}
 \section{LLVM}
@@ -112,7 +112,7 @@ a2 = 2
 c1 = a2 + 1
 \end{lstlisting}
 	\end{minipage}\hfill
-	\caption{The left hand side is normal program text, on the right hand side the corresponding SSA representation. It is customary to use a counting index for successively defined variables in SSA. Variable a's value is changed in line three. Therefore, a new definition is used in the SSA form}
+	\caption[non-SSA vs. SSA code]{The left hand side is non-SSA program text, on the right hand side the corresponding SSA representation. It is customary to use a counting index for successively defined variables in SSA. Variable a's value is changed in line three. Therefore, a new definition is used in the SSA form}
 	\label{simpleSSA}
 \end{figure}
 \subsubsection{$\phi$ Functions}

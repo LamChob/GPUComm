@@ -1,0 +1,51 @@
+\chapter{Instrumentation}
+Instrumenting an application at compile time happens in two steps. The first step is the instrumenting all 
+source file containing:
+\begin{itemize}
+	\item Kernel Calls
+	\item Kernel and \verb|__device__| function definitions
+	\item Kernel \verb|__device__| functoin declarations
+\end{itemize}
+
+Each file needs to be parsed separately. For each file, a new file with the prefix 'augmented-' is created. This is then used for
+the further build process. Compile units bear some problems with kernels defined and declared in \verb|.cu| files, which are then included
+in other files. The easiest workaround is to copy the kernel into the file including it, and then only use the including file for instrumentation and build.
+
+The following snipped is an example how to augment a kernel file.
+\begin{lstlisting}[style=C]
+clang++ -Xclang -load -Xclang "clang-plugin/libMemtrace-AA.so"
+	 -Xclang -plugin -Xclang cuda-aug -Xclang -plugin-arg-cuda-aug 
+	 -Xclang -f -Xclang -plugin-arg-cuda-aug -Xclang ./augmented-kernel.cu 
+	 -I$CUDASYS/samples/common/inc -I. -I../utils
+     --cuda-path=$CUDASYS -std=c++11 -E application/kernel.cu 
+\end{lstlisting}
+
+Next, the host and device utils are compiled, for later linking with the application.
+\begin{lstlisting}[style=C]
+// Host
+clang++ -c -L$CUDASYS/lib64 --cuda-path=$CUDASYS 
+ -I$CUDASYS/samples/common/inc -O1 --cuda-gpu-arch=sm_30
+  -I$CUDASYS/include  -o hutils.o --std=c++11 -I. -I../utils
+ ../utils/TraceUtils.cpp
+// Device
+clang++ -c -L$CUDASYS/lib64 --cuda-path=$CUDASYS 
+ -I$CUDASYS/samples/common/inc -O1 --cuda-gpu-arch=sm_30
+ -I$CUDASYS/include -o dutils.o --std=c++11 -I. -I../utils
+ ../utils/DeviceUtils.cu
+\end{lstlisting}
+Next, all the augmented kernel files are compiled at once.
+\begin{lstlisting}[style=C]
+clang++ -c -Xclang -load -Xclang $LLVMPLUGIN  --cuda-path=$CUDASYS
+ -I$CUDASYS/samples/common/inc --cuda-gpu-arch=sm_30 -L$CUDASYS/lib64  -O1
+ -lcudart_static -m64  --std=c++11 -I. -I../utils -I<app-includes>
+  ./augmented-kernel.cu ./augmented-kernel2.cu
+\end{lstlisting}
+Finally, all compiled files are linked together.
+\begin{lstlisting}[style=C]
+clang++ --cuda-path=$CUDASYS -I$CUDASYS/samples/common/inc --cuda-gpu-arch=sm_30 -L$CUDASYS/lib64  -O1
+ -lcudart -ldl -lrt -L. -m64 --std=c++11 -I. -I../utils -I<app-includes>
+ -o application dutils.o hutils.o augmented-kernel.o augmented-kernel2.o
+\end{lstlisting}
+
+During the execution one or more files are generated in the \verb|/tmp| folder. The files are named \verb|MemTrace-pipe-<n>|, one for
+each stream.

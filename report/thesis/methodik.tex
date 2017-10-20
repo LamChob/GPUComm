@@ -16,7 +16,7 @@ The CUDA execution model and the given guarantees can be mapped to the Bulk-Sync
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{gpu-comm}
-	\caption{Communication of CTAs across a BSP superstep boundary, and how this corresponds to read and write sets 
+	\caption[CTA Communication]{Communication of CTAs across a BSP superstep boundary, and how this corresponds to read and write sets 
 	of sinks and sources. Edges are logical representations of communication, which is actually the overlap of write and read addresses in different BSP supersteps. Different colors represent different sink/source entities.}
 	\label{gpu-comm}
 \end{figure} 
