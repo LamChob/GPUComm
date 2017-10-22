@@ -26,7 +26,6 @@ overlapping area in the write- and read-sets. The left-most graph is a simple po
 This representation works for all levels of granularity in the hierarchy of the GPU execution model, from a single thread to an application using multiple kernels and streams.
 
 \section{Analysis Space Exploration}
-
 The analysis space for this work can be separated into spatial and temporal dimensions. The spatial dimension includes the layered hierarchy of threads, CTAs and Kernels. Each hierarchy layer is the superset of the underlying layers. For example, the total data volume written by a kernel is the sum of all its CTA's writes. 
 Granularity determines how detailed the spatial dimension is analysed.
 The coarsest granularity would be a complete application with multiple kernels and iterations, and the finest a single thread. For this work however, CTAs are used as the finest granularity. The spatial dimension can help characterize an application, but by itself cannot describe communication.

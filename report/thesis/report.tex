@@ -54,21 +54,23 @@
 %\newpage % Newpage required for correct pagination
 \begin{abstract}
 % Moti
-GPU hardware and software continues to scale and understanding applications is crucial for performance
-optimizations.
-% Problem statement
-To the knowledge the author, there is no work concerned with the intra-applications communication in GPUs and
-no instrumentation framework capable of dynamic tracing at GPU runtime.
-%Approach 
+In HPC world, the communication of massive parallel workloads in distributed memory systems thoroughly analysed.
+GPU hardware and software continues to scale in parallelism, yet the intra-application communication hasn't been  a topic of research. However, the understanding of this intra-application communication is of fundamental importance for multi-GPU scaling of applications.
 
 This work uses compiler extensions to instrument GPU applications for tracing. The instrumentation adds tracing for all load and store instructions targeting global memory in a GPU. Data is dynamically transferred between from the device to host at run time, through a producer-consumer controlled buffer. 
-%results
 
-Using the generated traces, communication across BSP supersteps is analysed. The analysis shows messages between supersteps are dominated transfer few sizes. The number of communication partners and memory strides
-of communication depend on the application and its regularity.
-%conclusion
-\\\\
-Das ist der Deutsche Abstract
+Using the generated traces, communication across BSP supersteps is analysed. The analysis shows messages between kernel supersteps are dominated by few transfer sizes. The number of communication partners and memory strides in communication depend on the application and its regularity.
+Irregular applications display irregularities in the amount of data and number of communication partners across several supersteps, while regular applications do not. All applications show a tendency towards collective communication.
+\\\\\\\\
+In der Welt des High-Performance Computing ist die Kommunikation von distributed-memory Anwendungen ausgiebig erforscht. Die Parallelität von GPU Hardware und Software wächst immer weiter, aber die Kommunikation innerhalb von Anwendungen wurde bis jetzt noch nicht untersucht. Das Verständnis dieser Kommunikation ist aber essenziell für Multi-GPU Skalierung von Anwendungen.
+
+Diese Arbeit nutzt Compiler-Erweiterungen, um GPU Anwendungen so zu instrumentieren, dass diese Traces erzeugen. Das Tracing geschieht für alle Speicherzugriffe auf den Global Memory einer GPU. Die Daten werden dynamisch von
+der GPU auf den Host übertragen, über einen Erzeuger-Verbraucher gesteuerten Speicher.
+
+Die generierten Daten werden dazu verwendet, die Kommunikation über BSP Supersteps zu analysieren. Eine Analyse
+zeigt die Übertragungen zwischen Kerneln sind von einigen wenigen Größen dominiert. Die Anzahl der Kommunikationspartner und Größe des Memory Strides während der Kommunikation hängen von der Anwendung der deren
+Regularität ab. Irreguläre Anwendungen zeigen Unregelmäßigkeiten im übertragenen Datenvolumen und der Anzahl
+der Kommunikationspartner über mehrere Supersteps hinweg, wohingegen reguläre Anwendungen das nicht zu tun. All Anwendungen zeigen eine Tendenz zur kollektiven Kommunikation.
 \end{abstract}
 
 % Roman counting for ToC
