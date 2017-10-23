@@ -3,13 +3,14 @@ This chapter analyses the traces generated with the technique described in chapt
 
 
 \section{Evaluated Applications}
-The evaluated application are listed in table \ref{eval-apps}. The applications are selected to represent typical problem Domains in scientific computing. 
+The evaluated application are listed in table \ref{eval-apps}. The applications are selected to represent typical problem domains in HPC. 
 \begin{table}[h]
 	\centering
 \begin{tabular}{|l|c|c|c|c|}
 	\hline 
 	\textbf{Application} & \textbf{Source} & \textbf{Domain} & \textbf{Abbreviation} &\textbf{Problem Size} \\ 
 	\hline 
+	\hline
 
 %	\hline 
 	Hotspot 2D & Rodinia & Structured Grid 2D & hs2d & 512x512, t = 10\\ 
@@ -175,15 +176,15 @@ As the CDF plot shows, all applications are dominated by few transfer sizes betw
 	\caption{Transfer Density Plots}
 	\label{fig:density-plots}
 \end{figure}
-\\\\\\\\\
+
 \section{Tier II Analysis}
 \subsection{Kernel communication Evolution}
 This analysis if figure \ref{trans-ratio} shows how the data volumes change across supersteps. It is separated into loads and stores. Loads start at superstep one because as to our definition of communication, there can be no load that is part
 of communication during the first superstep. Stores are not displayed in the last iteration, because the last store of an application is no communication.
 
-The graph is to read as such: Stores happened in this superstep and are readable in the next. Loads read data from the preceding superstep. CTA in- and out degree analysis showed, every communication is happening in a collective environment. This means that there is no simple single writer, single reader matching across supersteps, which is the reason loads and stores are separated in this graphs.
+The graph is to read as such: Stores happened in this superstep and are readable in the next. Loads read data from the preceding superstep. CTA in- and out degree analysis showed, every communication is happening in a collective environment. This means that there is no simple single writer, single reader matching across supersteps, which is the reason loads and stores are separated in these graphs.
 
-As expects, the data of all regular applications follow a pattern, while the ones on irregular applications do not. The stencils do not
+As expected, the data of all regular applications follow a pattern, while the ones on irregular applications do not. The stencils do not
 vary volumes, because every iteration performs exactly the same task. Because each CTA only updates
 it's own set of bodies, \textit{nbody} has constant store volumes. The load volume of every other iteration accesses all bodies, creating the zig-zag pattern.
 \begin{figure}[h!]
@@ -193,7 +194,7 @@ it's own set of bodies, \textit{nbody} has constant store volumes. The load volu
 	\label{trans-ratio}
 \end{figure}
 \subsection{Superstep Distance}
-This metric measures the volume of data transferred, but takes into account the number of supersteps distance between the store and the subsequent load. Only \textit{bfs} shows this behaviour,
+This metric measures the volume of data transferred, but takes into account the number of supersteps between the store and the subsequent load. Only \textit{bfs} shows this behaviour, so
 figure \ref{trans-distance} shows only the volume for this application. The distance describes the number
 of supersteps, or kernel launches, happening before written data is read by a CTA. A distance of zero means, the directly succeeding kernel reads the data.
 
@@ -210,7 +211,7 @@ As an example, a subset of distance zero might very well be included in more dis
 \subsection{CTA connectivity evolution}
 As shown in figure \ref{fig:Cta-degree}, most applications have a steady number incoming and outgoing connections. Figure \ref{philandering} shows how the mean number of outgoing communication partners changes over time, including the standard deviation. 
 
-The large fluctuation of \textit{nbody} can be explained with two alternating kernels, one kernel accesses only it's own set of bodies, while the other kernel accesses all bodies, which increases the out-degree. Because \textit{hist} consists of only two steps, it is represented by single value. Both \textit{path} and \textit{bfs} show stronger fluctuations with increasing number of iteration, caused by the exploration of the graph. Same as with the load and store volume of each iteration, the stencils show no variation.
+The fluctuation of \textit{nbody} can be explained with two alternating kernels, one kernel accesses only it's own set of bodies, while the other kernel accesses all bodies, which increases the out-degree. Because \textit{hist} consists of only two steps, it is represented by single value. Both \textit{path} and \textit{bfs} show stronger fluctuations with increasing number of iteration, caused by the exploration of the graph. Same as with the load and store volume of each iteration, the stencils show no variation.
 
 \begin{figure}[h!]
 	\centering

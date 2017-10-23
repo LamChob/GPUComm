@@ -1,26 +1,27 @@
 \chapter{Motivation}
-The communication of HPC applications in distributed memory systems via MPI in HPC is thoroughly researched in many publications, like ... or ... show.
+The communication of HPC applications in distributed memory systems with MPI is thoroughly researched in many publications, like ... or ... .
 With respect to the BSP modell, GPU computing has many similarities to computing in distributed memory systems. Each CTA computes independently and information is stored in memory. CTAs in subsequent kernels read this data, creating patterns of communication. This resembles MPI, as each node computes locally, and then communicates and synchronizes with other nodes, before the next part of computation.
 Yet, intra-application communication in GPUs has not been researched, despite the fact that General Purpose GPU (GPGPU) computing is a well established part of high performance computing, as many Top500 
 systems \cite{Top500} use GPUs to accelarate computation. 
 
 In GPUs, parallel hardware continues scaling with every generation, from 512 CUDA cores in Fermi  \cite{FermiPaper} to 3840 CUDA cores in the current Pascal generation \cite{PascalPaper}. This scaling is supported by CUDAs programming model, allowing performance portable applications. With increasing potential parallelism and concurrency, communication patterns, volumes and complexity also increase or change.
-An understanding of intra-applicatio communication is fundamental for the scaling of applications to multiple
+An understanding of intra-application communication is fundamental for the scaling of applications to multiple
 GPUs.
 %HPC has massively distributed memory parallel applications, which are well researched.
 %GPUs are like that, too. But not researched, yet because shared memory architecture.
 %Fundamentally interesting to research behaviour, when scaling to multiple GPUs.
 
-
-The analysis of an application can happen on many levels. Spafford et al. \cite{Spafford:2012:ADS:2388996.2389110} categorized these levels and presented several 
-metrics for evaluation, including speed and accuracy. GPGPU applications can be analysed with cycle-accurate GPU Simulators. While they provide very accurate results, they have two drawback. 
-The first issue is the execution speed, as it takes very long to simulate every hardware cycle in software. 
-The second issue is that simulators do not provide models for the latest hardware generations. GPGPU-Sim, for example, only supports Fermi architectures. \cite{gpgpu}
+To create this understanding, an in-depth knowledge about the communication is required. The knowledge can be generated
+using different techniques.
+Spafford et al. \cite{Spafford:2012:ADS:2388996.2389110} categorized these techniques and presented several 
+metrics for evaluation, including speed and accuracy. For high accuracy requirements, GPGPU simulators provide cycle-accurate simulation results for an application. However, it takes very long to simulate every hardware cycle in software which makes it a time-consuming process. 
+Another issue with simulation is the implementation of different hardware generation. GPGPU-Sim, for example, only supports Fermi architectures. \cite{gpgpu}
 
 Analytical modelling uses mathematical models, trying to create an approximation on the applications behaviour.
 While this can be done quickly, accuracy is usually lacking, especially for dynamic or data-depended applications.
 
-Another way of analysis is tracing of existing applications. An application instrumented for tracing logs information on a desired metric and stores the information for later analysis. Instrumented code is faster than simulations as it runs on the actual hardware and can be used on any hardware generation. Although slower than analytical modelling, it is  more accurate since it is generated while the actual application executes, using a real dataset.
+MPI communication is characterized using traces. An application instrumented for tracing logs information on a desired metric and stores the data for later analysis. Instrumented code is faster than simulations as it runs on the actual hardware and can be used on any hardware generation. Although slower than analytical modelling, it is more accurate since it is generated while the actual application executes, using a real dataset.
+These features make instrumentation and tracing the tool of choice for this thesis.
 
 
 %\begin{itemize}
@@ -39,7 +40,7 @@ This thesis has two main goals. First, develop tooling for instrumentation of GP
 original application. With this setup, traces can be generated for any application providing source code,
 across different generations of Nvidia hardware. A loss in performance resulting from the traces will be tolerated.
 
-The second goal is to use the generated traces to analyse how CTAs and kernels communicate during the execution of an application. The communication will be analysed on a qualitative level by classifying how the data is exchanged and on a quantitative level with metrics like volume, frequency and density to describe kernel and CTA interactions.
+The second goal is to use the generated traces for CTAs and kernels communicate analysis. The communication will be analysed on a qualitative level by classifying how the data is exchanged and on a quantitative level with metrics like volume, density and distance to characterize kernel and CTA interactions.
 
 
 \section{Outline}
