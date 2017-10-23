@@ -1,5 +1,5 @@
 \chapter{Motivation}
-The communication of HPC applications in distributed memory systems with MPI is thoroughly researched in many publications, like ... or ... .
+The communication of HPC applications in distributed memory systems with MPI is thoroughly researched in many publications, like  \cite{Klenk} or \cite{Riesen:2006:CP:1898699.1898795}.
 With respect to the BSP modell, GPU computing has many similarities to computing in distributed memory systems. Each CTA computes independently and information is stored in memory. CTAs in subsequent kernels read this data, creating patterns of communication. This resembles MPI, as each node computes locally, and then communicates and synchronizes with other nodes, before the next part of computation.
 Yet, intra-application communication in GPUs has not been researched, despite the fact that General Purpose GPU (GPGPU) computing is a well established part of high performance computing, as many Top500 
 systems \cite{Top500} use GPUs to accelarate computation. 
