@@ -1,16 +1,16 @@
 \chapter{Background}
 \section{Bulk Synchronous Parallel} \label{sec:bsp}
 Bulk Synchronous Parallel (BSP) is a bridging model introduced by L.G. Valiant \cite{Valiant:1990:BMP:79173.79181}. A bridging model describes a conceptual understanding of
-hardware for the purpose software development. The most basic of these models is the von Neumann architecture, which is still used as the basic understanding of sequential hardware in modern CPUs. In the wake of parallel computing, BSP was proposed to fulfil the same roll
-for the understanding of parallel hardware. The model does not specify how any of its parts should be realised in hardware or software, since it's purpose is to provide a common ground for hardware and software developers. 
-BSP fundamental principal is the separation of computation and communication. A computer modelled after BSP requires
+hardware for the purpose software development A well known example of of these models is the von Neumann architecture, which is still used as the basic understanding of sequential hardware in modern CPUs. In the wake of parallel computing, BSP was proposed to fulfill the same role
+for the understanding of parallel hardware. The model does not specify how any of its parts should be realised in hardware or software, as its purpose is to provide a common ground for hardware and software developers. 
+BSP's fundamental principal is the separation of computation and communication. A computer modelled after BSP requires
 \begin{enumerate}
 	\item a set of components or execution units, performing the computational work of the algorithm.
 	\item a router to convey information between the components.
 	\item a facility to synchronize some or all of the components in steady intervals.
 \end{enumerate}
 Each component performs local computations and then shares information with
-the other components via the rounter. The synchronization guarantees that all components completed computation and communication. The sequence of computation, communication and synchronization is called a superstep. One or more supersteps are used to implement an algorithm.
+the other components via the rounter. The designated synchronization step guarantees that all components completed computation and communication. The sequence of computation, communication and synchronization is called a superstep. One or more supersteps are used to implement an algorithm.
 The model allows excluding components from synchronization, if the algorithm allows or requires it.
 
 Although all computations are supposed to be local, BSP allows concurrent read and concurrent write access to a shared memory between the
@@ -20,10 +20,10 @@ components. But only if the underlying memory system guarantees coherent and con
 GPGPU computing utilizes GPUs for computations other that graphics. With CUDA, NVidia offers a C-based, proprietary language to write application for NVidia GPUs. GPUs are so called "many-core" processors, with thousands of compute units (CUDA cores). CUDA cores are clustered in Streaming Multiprocessors(SM). Code executed on a GPU is capsuled in a compute kernel. Figure \ref{gpu-hier} is an overview of the features detailed in the next sections. Nvidia also offers an assembler-like language called PTX, that is not architecture generation specific. \cite[4.1-4.2]{cuda-man}
 
 \subsection{Execution Model}
-Threads is CUDA are hierarchically organized. Groups of up to 1024 threads are organized in a 3D block, called "Collaborative Thread Array" (CTA). The execution of one compute kernel consists of many CTAs, organized in a 3D grid. During a kernel execution the CTAs are  scheduled to a SM in a non-deterministic fashion, based on available resources. Once a CTA is scheduled, it can not be pre-empted and executes until it is finished. \cite[2.1 - 2.2]{cuda-man}
+In CUDA, threads are organized hierarchically. Large groups of threads are organized in a 3D block, called "Collaborative Thread Array" (CTA). The execution of one compute kernel consists of many CTAs, organized in a 3D grid. During a kernel execution the CTAs are  scheduled to a SM in a non-deterministic fashion, based on available resources. Once a CTA is scheduled, it can not be pre-empted and executes until it is finished. \cite[2.1 - 2.2]{cuda-man}
 
 The threads inside a CTA are organized in groups of 32, called warp which execute in a Single Instruction Multiple Threads (SIMT) fashion. If the one or more threads in a warp have a branch in the Control-Flow-Graph (CFG), all threads in the warp
-execute the branch, but only the ones supposed to work create side-effects. The shared instruction stream continues if all threads finished a branch. \cite[4.1]{cuda-man}
+execute the branch, but only the ones supposed to work write back results. The shared instruction stream continues if all threads finished a branch. \cite[4.1]{cuda-man}
 
 A kernel usually consists of more CTAs than a GPU can execute concurrently, to utilize parallel slackness and create
 performance portable applications.
@@ -35,18 +35,19 @@ hardware units, CUDA offers streams. Each stream is has a sequential execution o
 be executed concurrently. \cite[5]{cuda-man}
 
 \subsection{Memory Model}
-GPUs have a hierarchical memory model, with different address spaces. Table \ref{GPUMemTable} lists all available memories and their properties. For this work we will focus on global memory, as it is the only 
-memory allowing modification by a kernel, which persist beyond the kernel completion boundary.
+GPUs have a hierarchical memory model, with different address spaces. Table \ref{GPUMemTable} lists all available memories and their properties. For communication to exist, the used memory needs
+to allow side-effects across the kernel completion boundary. The only memory with this property
+is global memory.
 Host-Mapped memory falls in the same category as global, and for our purposes is treated as global memory. 
 Global address space is a shared memory for all kernels running a GPU.
 
-It is important to note, that CUDA only guarantees a consistent state of global memory, after the kernel completion 
+It is important to note that CUDA only guarantees a consistent state of global memory, after the kernel completion 
 boundary. There are no guarantees on global memory consistency during the execution of a kernel, which is another reason
 CTA interaction at kernel run-time is not intended. \cite[B5-B7]{cuda-man}
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.6\textwidth]{gpu-arch}
-	\caption{GPU thread and memory hierarchy. Image from \cite{}}
+	\caption{GPU thread and memory hierarchy. Image from \cite{Daly:2016:CH:3033148}}
 	\label{gpu-hier}
 \end{figure}
 \begin{table}
@@ -83,8 +84,8 @@ For this work, we will distinguish between three major components in the tool-ch
 	\item The \textbf{back-end} includes the linker and architecture depended code generation. This part of the
 	toolchain is not relevant for this work and is only mentioned for completeness.
 \end{itemize}
-This overview gives an sufficient understanding of the LLVM stack for this work and in the following sections
-the concepts of IR and passes are explored in more depth.
+%This overview gives an sufficient understanding of the LLVM stack for this work and in the following sections
+%the concepts of IR and passes are explored in more depth.
 
 \subsection{LLVM IR Program Representation} \label{llvmir}
 LLVM's IR is a typed RISC instructions set with a load/store memory architecture. The IR is architecture agnostic and provides an infinite set of virtual, typed registers. The available primitive language-independent types are: (un)signed integer (8-64 bit), single and double precision floating point, and Boolean. Derived from these primitive types are the aggregate types pointers, arrays, structures, and functions. In LLVM IR it is possible to transform form any type into an arbitary other type, using the \verb|cast| instruction. \cite{Lattner:2004:LCF:977395.977673}
@@ -98,7 +99,8 @@ The reason for this is the simplification and optimization of the passes analysi
 \subsection{Static Single Assignement}
 LLVM's IR is represented in Static Single Assignement (SSA) form. Informally, it can be defined as
 "A program is defined to be in SSA form if each variable is a target of exactly one assignment
-statement in the program text" \cite[p. 6]{Rastello:2016:SCD:3002539}.
+statement in the program text" \cite[p. 6]{Rastello:2016:SCD:3002539}. This property helps, among other things, with data-flow analysis and register allocation much easier.
+
 \begin{figure}[t]
 	\begin{minipage}{0.43\textwidth}	
 \begin{lstlisting}[style=c]
@@ -164,7 +166,7 @@ print(b3)
 	\begin{minipage} {0.45\textwidth}
 		\includegraphics[width=\textwidth]{phi-node-simple}
 	\end{minipage}
-	\caption{Branching program and resulting CFG. Now in SSA form, with $\phi$-function resolving merging CFG paths}
+	\caption{Branching program and resulting CFG. Now in SSA form, with a $\phi$-function resolving the merging CFG paths}
 	\label{simple-phi}
 \end{figure}
 \subsubsection{Def-Use and Use-Def Chains}
@@ -180,7 +182,7 @@ Due to the single definition variables of SSA, use-def chains are a single name,
 \end{figure}
 
 \subsection{LLVM Pass}\label{llvmpass}
-A pass in LLVM is a piece of software responsible for an analysis or transformation of IR. Passes are distinguished into said categories. An analysis pass creates or computes information on the piece of IR it is running on, which can be used later by other passes. It doesn't modify the IR. As one pass may depend on the result of another analysis, passes are scheduled accordingly by the pass manager. A transformation pass alters the IR in place and does not produce any results. A transformation might trigger the re-run of an analysis as changes to the IR might invalidate the original results. Opposed to an analysis, transformations are not allowed to rely on results of other transformations. \cite{llvm-passes}
+A pass in LLVM is a piece of software responsible for an analysis or transformation of IR. An analysis pass creates or computes information on the piece of IR it is running on, which can be used later by other passes. It doesn't modify the IR. As one pass may depend on the result of another analysis, passes are scheduled accordingly by a pass manager. A transformation pass alters the IR in place and does not produce any results. A transformation might trigger the re-run of an analysis as changes to the IR might invalidate the original results. Opposed to an analysis, transformations are not allowed to rely on IR alterations of other transformation passes. An exception is the mem2reg pass which performs register allocations. Most other passes rely on this pass to have run. \cite{llvm-passes}
 
 \subsubsection{Scopes}
 A pass can run on various scopes of IR. The pass can not access IR outside this scope and in the same pass, information can not be conveyed from one scope's context to another. For example: If a pass analyses functions, each function in the IR is analysed individually, with no knowledge about other functions. \cite{llvm-scopes}
