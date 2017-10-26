@@ -52,7 +52,7 @@ traced kernel's name. Because all records have the same size, they are stored wi
 \section{Source to Source Compilation in Clang}\label{sec:impl:clang}
 The first instrumentation step extends the host code and adds includes that are used by the kernel. A Clang front-end
 plugin is used to transform a file and generate a new, augmented source for the build process. The plugin uses the \verb|ASTVisitor| pattern in clang's API to traverse statements and declarations of interest.
-After the AST modification, two headers are included and a new file is created.
+After the AST modification, two headers are included and a new file is created. \cite{front-end}
 
 \begin{itemize}
 	\item \verb|TraceUtils.h| contains host-side buffer and stream management, trace consumer control and storage.

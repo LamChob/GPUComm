@@ -17,7 +17,7 @@ Although all computations are supposed to be local, BSP allows concurrent read a
 components. But only if the underlying memory system guarantees coherent and consistent resolution of access conflicts.
 
 \section{General Purpose GPU Compuing}
-GPGPU computing utilizes GPUs for computations other that graphics. With CUDA, NVidia offers a C-based, proprietary language to write application for NVidia GPUs. GPUs are so called "many-core" processors, with thousands of compute units (CUDA cores). CUDA cores are clustered in Streaming Multiprocessors(SM). Code executed on a GPU is capsuled in a compute kernel. Figure \ref{gpu-hier} is an overview of the features detailed in the next sections. Nvidia also offers an assembler-like language called PTX, that is not architecture generation specific. \cite[4.1-4.2]{cuda-man}
+GPGPU computing utilizes GPUs for computations other that graphics. With CUDA, Nvidia offers a C-based, proprietary language to write application for Nvidia GPUs. GPUs are so called "many-core" processors, with thousands of compute units (CUDA cores). CUDA cores are clustered in Streaming Multiprocessors(SM). Code executed on a GPU is capsuled in a compute kernel. Figure \ref{gpu-hier} is an overview of the features detailed in the next sections. Nvidia also offers an assembler-like language called PTX, that is not architecture generation specific. \cite[4.1-4.2]{cuda-man}
 
 \subsection{Execution Model}
 In CUDA, threads are organized hierarchically. Large groups of threads are organized in a 3D block, called "Collaborative Thread Array" (CTA). The execution of one compute kernel consists of many CTAs, organized in a 3D grid. During a kernel execution the CTAs are  scheduled to a SM in a non-deterministic fashion, based on available resources. Once a CTA is scheduled, it can not be pre-empted and executes until it is finished. \cite[2.1 - 2.2]{cuda-man}
@@ -59,7 +59,7 @@ CTA interaction at kernel run-time is not intended. \cite[B5-B7]{cuda-man}
 		\hline
 		Register  & Thread & RAM & high & low & 32bit & SM \\ 
 %		\hline 
-		Shared  & CTA & RAM & high & low & < 48k & SM \\ 
+		Shared  & CTA & RAM & high & low & < 64k & SM \\ 
 %		\hline 
 		Global  & Kernel & RAM & high & high & < 20GB & device \\ 
 %		\hline 
@@ -68,7 +68,7 @@ CTA interaction at kernel run-time is not intended. \cite[B5-B7]{cuda-man}
 		Host-Mapped  & Kernel+CPU & RAM & low & high & > 20GB & host \\ 
 		\hline 
 	\end{tabular} 
-	\caption{GPU Memory\cite[2.3]{cuda-man}}
+	\caption{GPU Memory\cite[2.3]{cuda-man}. Numbers based on GP100 generation.\cite{PascalPaper}}
 	\label{GPUMemTable}
 \end{table}
 \section{LLVM}

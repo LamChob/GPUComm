@@ -61,7 +61,9 @@ This work uses compiler extensions to instrument GPU applications for tracing. T
 
 Using the generated traces, communication across BSP supersteps is analysed. The analysis shows messages between supersteps are dominated by few transfer sizes. The number of communication partners and memory strides in communication depend on the application.
 Irregular applications display irregularities in the amount of data and number of communication partners across several supersteps, while regular applications do not. All applications show a tendency towards collective communication.
-\\\\\\\\
+\\\\
+\hfill \centerline{\textbf{Zusammenfassung}}\hfill
+\\\\
 In der Welt des High-Performance Computing ist die Kommunikation von distributed-memory Anwendungen ausgiebig erforscht. Die Parallelität von GPU Hardware und Software wächst immer weiter, aber die Kommunikation innerhalb von Anwendungen wurde bis jetzt noch nicht untersucht. Das Verständnis dieser Kommunikation ist aber essenziell für Multi-GPU Skalierung von Anwendungen.
 
 Diese Arbeit nutzt Compiler-Erweiterungen, um GPU Anwendungen so zu instrumentieren, dass diese Traces erzeugen. Das Tracing geschieht für alle Speicherzugriffe auf den Global Memory einer GPU. Die Daten werden dynamisch von
@@ -71,6 +73,9 @@ Die generierten Daten werden dazu verwendet, die Kommunikation über BSP Superste
 zeigt die Übertragungen zwischen Kerneln sind von einigen wenigen Größen dominiert. Die Anzahl der Kommunikationspartner und Größe des Memory Strides während der Kommunikation hängen von der Anwendung ab. Irreguläre Anwendungen zeigen Unregelmäßigkeiten im übertragenen Datenvolumen und der Anzahl
 der Kommunikationspartner über mehrere Supersteps hinweg, wohingegen reguläre Anwendungen das nicht zu tun. All Anwendungen zeigen eine Tendenz zur kollektiven Kommunikation.
 \end{abstract}
+	\mbox{}
+\thispagestyle{empty}
+\newpage
 
 % Roman counting for ToC
 \setcounter{page}{1}
@@ -95,6 +100,9 @@ der Kommunikationspartner über mehrere Supersteps hinweg, wohingegen reguläre An
 %\lstlistoflistings\newpage
 \listoffigures\newpage
 \listoftables\newpage
+	\mbox{}
+\thispagestyle{empty}
+\newpage
 	%\include{praeamble}
 	% Document with regular arabic pagination
 	\pagenumbering{arabic}
@@ -111,10 +119,12 @@ der Kommunikationspartner über mehrere Supersteps hinweg, wohingegen reguläre An
 \bibliography{report}
 \begin{appendices}
 	\pagenumbering{Roman}
-	\setcounter{page}{4}
+	\setcounter{page}{6}
 \include{appendix-build}
 \include{appendix-post}
 \end{appendices}
+	\mbox{}
+\thispagestyle{empty}
 \newpage
 \thispagestyle{empty}
 Erklärung:\\\\

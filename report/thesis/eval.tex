@@ -18,7 +18,7 @@ The evaluated application are listed in table \ref{eval-apps}. The applications 
 	Hotspot 3D & Rodinia & Structured Grid 3D & hs3d& 512x512x8, t = 10\\ 
 %	\hline 
 	Histogram64 & CUDA SDK & Histogram & hist& 64MB into 64 Bins\\ 
-	NBody & ZiTi CEG & Nbody & nbody& 512 Bodies, t = 5\\ 
+	NBody & ZITI CEG & Nbody & nbody& 512 Bodies, t = 5\\ 
 	Pathfinder & Rodinia & Shortest Path & path& 100000x100x20\\ 
 %	\hline 
 	Breadth First Seach & Rodinia & Graph Processing & bfs& $10^{6}$ Nodes\\ 
@@ -26,7 +26,7 @@ The evaluated application are listed in table \ref{eval-apps}. The applications 
 
 	\hline 
 \end{tabular} 
-\caption{Application used for communication evaluation}
+\caption{Application used for communication characterization}
 \label{eval-apps}
 \end{table}
 \textit{Hist}, \textit{hs2d}, \textit{hs3d} and \textit{nbody} are regular applications, where each CTA only operates within his data region. \textit{BFS} and \textit{path} contain irregularity, as the execution is  dynamic and the behaviour is depended on the input data.
@@ -36,7 +36,7 @@ The evaluated application are listed in table \ref{eval-apps}. The applications 
 
 \textit{Nbody} and \textit{hist} show a very high ratio of communication, because \textit{nbody} is an $n$-to-$n$ problem and the histogram algorithm reduces a problem into bins, only using on the data generated in the preceding step. The irregular applications, \textit{bfs} and \textit{path}, communicate less data compared to the four regular applications.
 
-Against initial expectations,  \textit{hs2d} and \textit{hs3d} show almost 50\% communication ration. The reason is, \textit{hs2d} uses deep halos which increase the number of transferred bytes between iterations. \textit{Hs3d} exchanges the complete $z$-dimension across iterations. 
+Against initial expectations,  \textit{hs2d} and \textit{hs3d} show almost 50\% communication ration. \textit{Hs2d} uses deep halos which increase the number of transferred elements between iterations. \textit{Hs3d} exchanges the complete $z$-dimension across iterations. 
 
 
 \begin{figure}[t]
@@ -105,9 +105,9 @@ every CA in the first step.
 	\label{fig:Cta-degree}
 \end{figure}
 \subsection{Bisection Volume}
-This metric shows the data volume moved a hypothetical cut in each dimension. The cut creates two equally sized grids. This can help analyse, how well an application scales to multiple GPUs. Because none of analysed application use the $z$-dimension of CTA organisation, only the $x$ and $y$ dimensions are plotted. 
+This metric shows the data volume communicated across a hypothetical cut in each dimension. The cut creates two equally sized grids. This can help analyse, how well an application scales to multiple GPUs. Because none of analysed application use the $z$-dimension of CTA organisation, only the $x$ and $y$ dimensions are plotted. 
 
-\textit{Hs3d} strikes out, as it clearly shows that a cut in the $y$-dimension would not be favourable. The path algorithm shows a very low bisection volume, making it a good candidate for multi-gpu scaling.
+\textit{Hs3d} strikes out, as it clearly shows that a cut in the $y$-dimension would not be favourable. The \textit{path} algorithm shows a very low bisection volume, making it a good candidate for multi-GPU scaling.
 Because of \textit{bfs} very irregular access patterns and high bisection volume and ratio, scaling to multiple GPUs can be challenging. The same goes for \textit{hist} and \textit{nbody}, because they both
 perform all-to all communication. The scalability of the stencil applications depends on the problem, stencil and halo size and halo.
 \begin{figure}[t]
@@ -119,9 +119,8 @@ perform all-to all communication. The scalability of the stencil applications de
 \subsection{Communication Stride}
 The stride in loads and stores involved in communication can be a critical aspect for performance. Large strides reduce the available memory bandwidth and increase latency. The strides in figure \ref{com-stride} are measured in byte distance, not elements.
 
-The \textit{hist} application shows a large load stride in figure \ref{com-stride}, together with a large in-degree in figure \ref{fig:Cta-degree} suggest a 'gather'-like characteristic. For \textit{hs2d}/\textit{hs3d} we see the expected stride created by the tiling/stencil, accessing multiple rows at once.
-The irregular pattern of \textit{bfs} is caused by the frontier array, which is used to communicate between all CTAs. The stride of nbody
-is
+The \textit{hist} application shows a large load stride in figure \ref{com-stride}, together with a large in-degree in figure \ref{fig:Cta-degree} suggest a 'gather'-like characteristic. For \textit{hs2d}/\textit{hs3d} we see the expected stride created by the tiles/stencils, accessing multiple rows at once.
+The irregular pattern of \textit{bfs} is caused by the frontier array, which is used to communicate between all CTAs.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{../../../Global-Memory-Tracing/memtrace-pass/plots/strides}
@@ -184,7 +183,7 @@ of communication during the first superstep. Stores are not displayed in the las
 
 The graph is to read as such: Stores happened in this superstep and are readable in the next. Loads read data from the preceding superstep. CTA in- and out degree analysis showed, every communication is happening in a collective environment. This means that there is no simple single writer, single reader matching across supersteps, which is the reason loads and stores are separated in these graphs.
 
-As expected, the data of all regular applications follow a pattern, while the ones on irregular applications do not. The stencils do not
+As expected, the data of all regular applications follows a pattern, while the  irregular applications do not. The stencils do not
 vary volumes, because every iteration performs exactly the same task. Because each CTA only updates
 it's own set of bodies, \textit{nbody} has constant store volumes. The load volume of every other iteration accesses all bodies, creating the zig-zag pattern.
 \begin{figure}[h!]
@@ -211,7 +210,7 @@ As an example, a subset of distance zero might very well be included in more dis
 \subsection{CTA connectivity evolution}
 As shown in figure \ref{fig:Cta-degree}, most applications have a steady number incoming and outgoing connections. Figure \ref{philandering} shows how the mean number of outgoing communication partners changes over time, including the standard deviation. 
 
-The fluctuation of \textit{nbody} can be explained with two alternating kernels, one kernel accesses only it's own set of bodies, while the other kernel accesses all bodies, which increases the out-degree. Because \textit{hist} consists of only two steps, it is represented by single value. Both \textit{path} and \textit{bfs} show stronger fluctuations with increasing number of iteration, caused by the exploration of the graph. Same as with the load and store volume of each iteration, the stencils show no variation.
+The fluctuation of \textit{nbody} can be explained with two alternating kernels, one kernel accesses only it's own set of bodies, while the other kernel accesses all bodies, which increases the out-degree. Because \textit{hist} consists of only two steps, it is represented by single value. Both \textit{path} and \textit{bfs} show stronger fluctuations with increasing number of iteration, caused by the exploration of the problem-space. Same as with the load and store volume of each iteration, the stencils show no variation.
 
 \begin{figure}[h!]
 	\centering

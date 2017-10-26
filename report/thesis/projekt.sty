@@ -52,9 +52,9 @@
 \newcommand{\fancystyle}{
 	\fancyhead[L]{\leftmark}
 	\fancyhead[R]{}
-	\fancyfoot[L]{\getBetrieb}
-	\fancyfoot[C]{}
-	\fancyfoot[R]{\thepage}
+	\fancyfoot[L]{}
+	\fancyfoot[C]{\thepage}
+	\fancyfoot[R]{}
 }
 
 % set header/footer
@@ -227,7 +227,10 @@
 %	        \end{tabbing}
 	\end{center}
 	\pagebreak
-	\thispagestyle{empty}
+	\mbox{}
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
 	\begin{center}
 			\LARGE \@title \\
 			\Large \getTopic
@@ -251,4 +254,9 @@
 			%	            Date:           \> \todayName
 			%	        \end{tabbing}
 	\end{center}
+	\pagebreak
+	\mbox{}
+	\thispagestyle{empty}
+	\newpage
+
 }
